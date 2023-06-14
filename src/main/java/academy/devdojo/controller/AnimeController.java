@@ -4,14 +4,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(path = "greetings")
-public class HelloController {
+@RequestMapping(path = "v1/animes")
+public class AnimeController {
 
-    @GetMapping("hi")
-    public String hi(){
-        return "OMAE WA MOU SHINDEIRU";
-
+    @GetMapping("")
+    public List<String> listAllAnimes(){
+        return List.of("Anime 01", "Anime 02", "Anime 03");
     }
-
 }
