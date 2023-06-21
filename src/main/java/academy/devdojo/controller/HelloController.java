@@ -17,7 +17,7 @@ public class HelloController {
     }
 
     @PostMapping
-    public Long save(@RequestParam String name){
+    public Long save(@RequestBody String name){
         log.info("Saving name '{}'", name);
         return ThreadLocalRandom.current().nextLong();
     }

@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Log4j2
 @RestController
@@ -27,6 +28,15 @@ public class AnimeController {
                 .filter(anime -> anime.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @PostMapping
+    public Anime save(@RequestBody Anime anime){
+        anime.setId(ThreadLocalRandom.current().nextLong(100_000));
+        Anime.getAnimes().add(anime);
+
+        return anime;
+
     }
 
 
