@@ -1,16 +1,15 @@
 package academy.devdojo.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
+@ToString
 public class Anime {
     private Long id;
     @JsonProperty(value = "name")
@@ -18,9 +17,9 @@ public class Anime {
     private static List<Anime> animes = new ArrayList<>();
 
     static {
-        var jigokuraku = new Anime(1L, "jigokuraku");
-        var konosuba = new Anime(2L, "konosuba");
-        var drStone = new Anime(3L, "drStone");
+        var jigokuraku = Anime.builder().id(1L).name("jigokuraku").build();
+        var konosuba = Anime.builder().id(2L).name("konosuba").build();
+        var drStone = Anime.builder().id(3L).name("drStone").build();
 
         animes.addAll(List.of(jigokuraku, konosuba, drStone));
     }
