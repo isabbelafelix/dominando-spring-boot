@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "v1/animes")
 public class AnimeController {
-    private final static AnimeMapper MAPPER = AnimeMapper.INSTANCE;
+    private static final AnimeMapper MAPPER = AnimeMapper.INSTANCE;
 
     @GetMapping("")
     public ResponseEntity<List<AnimeGetResponse>> listAllAnimes(@RequestParam(required = false) String name){
