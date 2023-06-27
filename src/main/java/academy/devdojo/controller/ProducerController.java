@@ -3,6 +3,7 @@ package academy.devdojo.controller;
 import academy.devdojo.mapper.ProducerMapper;
 import academy.devdojo.domain.Producer;
 import academy.devdojo.request.ProducerPostRequest;
+import academy.devdojo.request.ProducerPutRequest;
 import academy.devdojo.response.ProducerGetResponse;
 import academy.devdojo.response.ProducerPostResponse;
 import lombok.extern.log4j.Log4j2;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -60,6 +62,21 @@ public class ProducerController {
 
         Producer.getProducers().remove(producerFound);
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> replace(@RequestBody ProducerPutRequest request) {
+        log.info("Request received to UPDATE the producers '{}'", request);
+        Producer producerToRemove = Producer.getProducers()
+                .stream()
+                .filter(producer -> producer.getId().equals(request.getId()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not found to be updated"));
+
+        var producerUpdated = MAPPER.toProducer(request, producerToRemove.getCreatedAt());
+        Producer.getProducers().remove(producerToRemove);
+        Producer.getProducers().add(producerUpdated);
         return ResponseEntity.noContent().build();
     }
 }
