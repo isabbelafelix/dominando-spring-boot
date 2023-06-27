@@ -20,7 +20,7 @@ public class AnimeController {
     private static final AnimeMapper MAPPER = AnimeMapper.INSTANCE;
 
     @GetMapping("")
-    public ResponseEntity<List<AnimeGetResponse>> listAllAnimes(@RequestParam(required = false) String name){
+    public ResponseEntity<List<AnimeGetResponse>> listAllAnimes(@RequestParam(required = false) String name) {
         log.info("Request received to list all animes, param name '{}'", name);
         var animes = Anime.getAnimes();
         var animeGetResponses = MAPPER.toAnimeGetResponseList(animes);
@@ -36,9 +36,9 @@ public class AnimeController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<AnimeGetResponse> findById(@PathVariable Long id){
+    public ResponseEntity<AnimeGetResponse> findById(@PathVariable Long id) {
         log.info("Request received find anime by id '{}'", id);
-        var animeFound =  Anime.getAnimes()
+        var animeFound = Anime.getAnimes()
                 .stream()
                 .filter(anime -> anime.getId().equals(id))
                 .findFirst()
@@ -50,7 +50,7 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<AnimePostResponse> save(@RequestBody AnimePostRequest request){
+    public ResponseEntity<AnimePostResponse> save(@RequestBody AnimePostRequest request) {
         log.info("Request received save anime '{}'", request);
         var anime = MAPPER.toAnime(request);
         var response = MAPPER.toAnimePostResponse(anime);
@@ -58,6 +58,21 @@ public class AnimeController {
         Anime.getAnimes().add(anime);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Request received to DELETE the anime by id '{}'", id);
+        var animeFound = Anime.getAnimes()
+                .stream()
+                .filter(anime -> anime.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not found to be deleted"));
+
+        Anime.getAnimes().remove(animeFound);
+
+        return ResponseEntity.noContent().build();
 
     }
 
